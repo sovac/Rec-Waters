@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enterococci Predictor - Cabbage Tree Creek</title>
+    <script>
+        async function predict() {
+            const rainfall = parseFloat(document.getElementById('rainfall').value);
+            const month = parseInt(document.getElementById('month').value);
+            const season = parseInt(document.getElementById('season').value);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({rainfall, month, season})
+            });
+
+            const result = await response.json();
+            document.getElementById('output').innerText = 'Predicted Enterococci: ' + result.prediction.toFixed(2) + ' cfu/100ml';
+        }
+    </script>
+</head>
+<body>
+    <h2>Enterococci Predictor - Cabbage Tree Creek</h2>
+    <label>Rainfall (mm): <input type="number" id="rainfall" /></label><br/>
+    <label>Month (1-12): <input type="number" id="month" /></label><br/>
+    <label>Season (1=Summer, 2=Autumn, 3=Winter, 4=Spring): <input type="number" id="season" /></label><br/>
+    <button onclick="predict()">Predict</button>
+    <p id="output"></p>
+</body>
+</html>
